@@ -1,6 +1,7 @@
 package com.UploadHub.uploadhub.service;
 
 import com.UploadHub.uploadhub.domain.Board;
+import com.UploadHub.uploadhub.domain.BoardListReplyCountDTO;
 import com.UploadHub.uploadhub.dto.BoardDTO;
 import com.UploadHub.uploadhub.dto.PageRequestDTO;
 import com.UploadHub.uploadhub.dto.PageResponseDTO;
@@ -61,6 +62,21 @@ public class BoardServiceImpl implements BoardService{
         return PageResponseDTO.<BoardDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<BoardListReplyCountDTO> listWithReplyCount(PageRequestDTO pageRequestDTO) {
+        String[] types = pageRequestDTO.getTypes();
+        String keyword = pageRequestDTO.getKeyword();
+        Pageable pageable = pageRequestDTO.getPageable("bno");
+
+        Page<BoardListReplyCountDTO> result = boardRepository.searchWithReplyCount(types, keyword, pageable);
+
+        return PageResponseDTO.<BoardListReplyCountDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(result.getContent())
                 .total((int)result.getTotalElements())
                 .build();
     }

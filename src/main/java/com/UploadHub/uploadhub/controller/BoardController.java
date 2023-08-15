@@ -1,5 +1,6 @@
 package com.UploadHub.uploadhub.controller;
 
+import com.UploadHub.uploadhub.domain.BoardListReplyCountDTO;
 import com.UploadHub.uploadhub.dto.BoardDTO;
 import com.UploadHub.uploadhub.dto.PageRequestDTO;
 import com.UploadHub.uploadhub.dto.PageResponseDTO;
@@ -26,7 +27,8 @@ public class BoardController {
 
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model){
-        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+//        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        PageResponseDTO<BoardListReplyCountDTO> responseDTO = boardService.listWithReplyCount(pageRequestDTO);
         model.addAttribute("responseDTO", responseDTO);
     }
 
@@ -75,5 +77,7 @@ public class BoardController {
         redirectAttributes.addFlashAttribute("result", "removed");
         return "redirect:/board/list";
     }
+
+
 
 }

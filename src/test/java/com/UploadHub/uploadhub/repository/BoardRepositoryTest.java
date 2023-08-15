@@ -1,6 +1,7 @@
 package com.UploadHub.uploadhub.repository;
 
 import com.UploadHub.uploadhub.domain.Board;
+import com.UploadHub.uploadhub.domain.BoardListReplyCountDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -75,5 +76,23 @@ class BoardRepositoryTest {
             Board result = boardRepository.save(board);
             log.info("BNO: " + result.getBno());
         });
+    }
+
+    @Test
+    public void testSearchReplyCount(){
+        String[] types = {"t", "c", "w"};
+        String keyword = "1";
+        Pageable pageable = PageRequest.of(0,10,Sort.by("bno").descending());
+        Page<BoardListReplyCountDTO> result = boardRepository.searchWithReplyCount(types,keyword,pageable);
+
+        //total pages
+        log.info(result.getTotalPages());
+        //pag size
+        log.info(result.getSize());
+        //pageNumber
+        log.info(result.getNumber());
+        //prev next
+        log.info(result.hasPrevious() + ": " + result.hasNext());
+        result.getContent().forEach(board->log.info(board));
     }
 }

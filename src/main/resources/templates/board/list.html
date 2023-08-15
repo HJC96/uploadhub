@@ -4,18 +4,16 @@
       layout:decorate="~{layout/basic.html}">
 
 <div layout:fragment="content">
-  <!-- 게시판 검색 영역 시작 -->
+  <!-- 검색 폼 -->
   <div class="row mt-3">
-    <!-- 검색 폼 -->
     <form action="/board/list" method="get">
       <div class="col">
-        <!-- 페이지 크기를 숨겨서 전송하기 위한 input -->
+        <!-- 페이지 크기 숨겨진 필드 -->
         <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
         <div class="input-group">
-          <!-- 검색 타입 선택 -->
+          <!-- 검색 조건 선택 드롭다운 -->
           <div class="input-group-prepend">
             <select class="form-select" name="type">
-              <!-- 여러 검색 타입 옵션 -->
               <option value="">---</option>
               <option value="t" th:selected="${pageRequestDTO.type =='t'}">제목</option>
               <option value="c" th:selected="${pageRequestDTO.type =='c'}">내용</option>
@@ -24,10 +22,10 @@
               <option value="tcw" th:selected="${pageRequestDTO.type =='tcw'}">제목 내용 작성자</option>
             </select>
           </div>
-          <!-- 검색어 입력 -->
+          <!-- 검색 키워드 입력 필드 -->
           <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+          <!-- 검색 및 초기화 버튼 그룹 -->
           <div class="input-group-append">
-            <!-- 검색 및 초기화 버튼 -->
             <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
             <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
           </div>
@@ -35,20 +33,19 @@
       </div>
     </form>
   </div>
-  <!-- 게시판 검색 영역 끝 -->
 
-  <!-- 게시판 목록 영역 시작 -->
+  <!-- 게시글 목록 -->
   <div class="row mt-3">
     <div class="col">
 
+      <!-- 모달 창 -->
       <div class="card">
         <div class="card-header">
-          <!-- 게시판 목록 제목 -->
           Board List
         </div>
         <div class="card-body" >
           <h5 class="card-title">Board List </h5>
-          <!-- 게시판 테이블 시작 -->
+
           <table class="table">
             <thead>
             <tr>
@@ -60,25 +57,22 @@
             </thead>
 
             <tbody th:with="link = ${pageRequestDTO.getLink()}">
-
             <tr th:each="dto:${responseDTO.dtoList}"  >
               <th scope="row">[[${dto.bno}]]</th>
               <td>
-                <a th:href="|@{/board/read(bno =${dto.bno})}&${link}|"> [[${dto.title}]] </a>
+                <a th:href="|@{/board/read(bno =${dto.bno})}&${link}|" class="text-decoration-none"> [[${dto.title}]] </a>
+                <span class="badge progress-bar-success" style="background-color: #0a53be">[[${dto.replyCount}]]</span>
               </td>
               <td>[[${dto.writer}]]</td>
               <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>
             </tr>
-
-
             </tbody>
-          </table>
-          <!-- 게시판 테이블 끝 -->
 
-          <!-- 페이지네이션 시작 -->
+
+          </table>
+
           <div class="float-end">
             <ul class="pagination flex-wrap">
-          <!-- 페이지네이션 끝 -->
 
               <li class="page-item" th:if="${responseDTO.prev}">
                 <a class="page-link" th:data-num="${responseDTO.start -1}">Previous</a>
@@ -96,13 +90,12 @@
             </ul>
           </div>
 
+
         </div><!--end card body-->
       </div><!--end card-->
     </div><!-- end col-->
   </div><!-- end row-->
-  <!-- 게시판 목록 영역 끝 -->
 
-  <!-- 모달 시작 -->
   <div class="modal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -120,14 +113,13 @@
       </div>
     </div>
   </div>
-  <!-- 모달 끝 -->
 
 
 </div>
 
-<!-- 자바스크립트 영역 시작 -->
+
 <script layout:fragment="script" th:inline="javascript">
-    // 페이지네이션을 클릭하면 페이지 번호에 따라 폼을 전송하는 이벤트 리스너
+    // 페이지 번호 클릭 시 페이지 이동 이벤트 핸들러
     document.querySelector(".pagination").addEventListener("click", function (e) {
         e.preventDefault()
         e.stopPropagation()
@@ -147,8 +139,7 @@
         formObj.submit();
 
     },false)
-
-    // Clear 버튼을 클릭하면 /board/list로 이동하는 이벤트 리스너
+    // 'Clear' 버튼 클릭 시 목록 초기화 이벤트 핸들러
     document.querySelector(".clearBtn").addEventListener("click", function (e){
         e.preventDefault()
         e.stopPropagation()
@@ -157,10 +148,10 @@
 
     },false)
 
-    // 결과가 있으면 모달을 표시
-
+    //show modal
     const result = [[${result}]]
 
+    // 결과에 따라 모달 창 표시
     const modal = new bootstrap.Modal(document.querySelector(".modal"))
 
     if(result){
