@@ -18,6 +18,7 @@ Java와 SpringBoot를 이용하여 CRUD 게시판을 구현하였습니다. 댓�
 
 
 ## ERD 설계
+<img width="501" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/399eb054-0297-4756-966b-b5e0e07a7ce3">
 
 
 ## 화면 구성
