@@ -6,8 +6,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,6 +50,30 @@ class BoardRepositoryTest {
 
         //Delete part
         boardRepository.deleteById(bno);
+    }
 
+    @Test
+    public void testPaging(){
+        Pageable pageable = PageRequest.of(0,10, Sort.by("bno").descending());
+        Page<Board> result = boardRepository.findAll(pageable);
+    }
+
+    @Test
+    public void testSerach1(){
+        Pageable pageable = PageRequest.of(1,10,Sort.by("bno").descending());
+        boardRepository.search1(pageable);
+    }
+
+    @Test
+    public void testDataInsert(){
+        IntStream.range(1,100).forEach(i->{
+            Board board = Board.builder()
+                    .title("title..." + i)
+                    .content("content..."+i)
+                    .writer("user" + (i%10))
+                    .build();
+            Board result = boardRepository.save(board);
+            log.info("BNO: " + result.getBno());
+        });
     }
 }

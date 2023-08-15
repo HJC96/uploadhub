@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Setter @Getter
 @AllArgsConstructor @NoArgsConstructor
-@ToString
+@ToString @Builder
 public class Board extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //  persistence provider must assign primary keys for the entity using a database identity column.
