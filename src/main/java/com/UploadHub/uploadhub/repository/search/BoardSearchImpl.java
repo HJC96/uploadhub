@@ -4,7 +4,10 @@ import com.UploadHub.uploadhub.domain.Board;
 import com.UploadHub.uploadhub.domain.BoardListReplyCountDTO;
 import com.UploadHub.uploadhub.domain.QBoard;
 import com.UploadHub.uploadhub.domain.QReply;
+import com.UploadHub.uploadhub.dto.BoardImageDTO;
+import com.UploadHub.uploadhub.dto.BoardListAllDTO;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardSearch {
     public BoardSearchImpl(){
@@ -150,6 +154,94 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         // 조회된 리스트, 페이징 정보, 총 개수를 포함한 PageImpl 객체 반환
         return new PageImpl<>(dtolist, pageable, count);
     }
+
+    /*N+1 문제를 해결하기 위해 BatchSize 20적용*/
+
+    @Override
+    public Page<BoardListAllDTO> searchWithAll(String[] types, String keyword, Pageable pageable) {
+
+        // Q 클래스 인스턴스화
+        QBoard board = QBoard.board;
+        QReply reply = QReply.reply;
+
+        // board에 대한 기본 쿼리 생성
+        JPQLQuery<Board> boardJPQLQuery = from(board);
+
+        // board와 reply를 left join
+        boardJPQLQuery.leftJoin(reply).on(reply.board.eq(board));
+
+        // 검색 조건과 검색어가 주어진 경우
+        if ((types != null && types.length > 0) && keyword != null) {
+
+            // 조건문 빌더 생성
+            BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+            // 검색 조건에 따른 동적 쿼리 생성
+            for (String type : types) {
+                switch (type) {
+                    case "t":
+                        booleanBuilder.or(board.title.contains(keyword)); // 제목 검색
+                        break;
+                    case "c":
+                        booleanBuilder.or(board.content.contains(keyword)); // 내용 검색
+                        break;
+                    case "w":
+                        booleanBuilder.or(board.writer.contains(keyword)); // 작성자 검색
+                        break;
+                }
+            }
+
+            // 생성된 조건을 쿼리에 추가
+            boardJPQLQuery.where(booleanBuilder);
+        }
+
+        // 결과를 board로 그룹화
+        boardJPQLQuery.groupBy(board);
+
+        // 페이지 정보를 적용하여 페이징 처리
+        getQuerydsl().applyPagination(pageable, boardJPQLQuery);
+
+        // 결과를 board와 댓글 수로 선택
+        JPQLQuery<Tuple> tupleJPQLQuery = boardJPQLQuery.select(board, reply.countDistinct());
+
+        // 쿼리 결과로 튜플 리스트 조회
+        List<Tuple> tupleList = tupleJPQLQuery.fetch();
+
+        // 튜플 리스트를 DTO 리스트로 변환
+        List<BoardListAllDTO> dtoList = tupleList.stream().map(tuple -> {
+            Board board1 = tuple.get(board);
+            long replyCount = tuple.get(1, Long.class);
+
+            // 결과를 DTO로 변환
+            BoardListAllDTO dto = BoardListAllDTO.builder()
+                    .bno(board1.getBno())
+                    .title(board1.getTitle())
+                    .writer(board1.getWriter())
+                    .regDate(board1.getRegDate())
+                    .replyCount(replyCount)
+                    .build();
+
+            // 게시글의 이미지 정보를 DTO로 변환
+            List<BoardImageDTO> imageDTOS = board1.getImageSet().stream().sorted()
+                    .map(boardImage -> BoardImageDTO.builder()
+                            .uuid(boardImage.getUuid())
+                            .fileName(boardImage.getFileName())
+                            .ord(boardImage.getOrd())
+                            .build()
+                    ).collect(Collectors.toList());
+
+            dto.setBoardImages(imageDTOS); // DTO에 이미지 정보 설정
+
+            return dto;
+        }).collect(Collectors.toList());
+
+        // 전체 게시글 수 조회
+        long totalCount = boardJPQLQuery.fetchCount();
+
+        // DTO 리스트, 페이지 정보, 전체 게시글 수를 포함하여 결과 반환
+        return new PageImpl<>(dtoList, pageable, totalCount);
+    }
+
 
 
 }

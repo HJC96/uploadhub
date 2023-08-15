@@ -21,7 +21,8 @@ public class ReplyRepositoryTest {
     private ReplyRepository replyRepository;
 
     @Test
-    public void testInsert(){
+    public void testInsertAndBoardReplies(){
+        // Insert
         Long bno = 93L;
 
         Board board = Board.builder().bno(bno).build();
@@ -31,16 +32,13 @@ public class ReplyRepositoryTest {
                 .replyer("replyer1...")
                 .build();
         replyRepository.save(reply);
-    }
-    @Test
-    public void testBoardReplies(){
-        Long bno = 93L;
-        Pageable pageable = PageRequest.of(0,10, Sort.by("rno").descending());
+
+        // Fetch and Verify
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("rno").descending());
         Page<Reply> result = replyRepository.listOfBoard(bno, pageable);
 
-        result.getContent().forEach(reply -> {
-            log.info(reply);
+        result.getContent().forEach(r -> {
+            log.info(r);
         });
     }
-
 }

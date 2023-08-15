@@ -14,15 +14,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.UploadHub.uploadhub.domain.QReply.reply;
-
 @Service
 @RequiredArgsConstructor
 @Log4j2
+@Transactional // Transactional을 적용하면 한번 쿼리를 보내고 끝이 아니라, 필요할 때마다 메소드 내에서 추가 쿼리를 여러번 실행하는 것이 가능해진다.
 public class ReplyServiceImpl implements ReplyService{
 
     private final ReplyRepository replyRepository;
