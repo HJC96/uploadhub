@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <!-- 페이지의 제목 -->
+    <title>게시판 등록</title>
+</head>
+
+<div layout:fragment="content">
+    <!-- 내용 프래그먼트의 시작 -->
+
+    <div class="row mt-3">
+        <!-- 카드를 위한 행 컨테이너 -->
+
+        <div class="col">
+            <!-- 단일 열 레이아웃 -->
+
+            <div class="card">
+                <!-- 카드 컴포넌트의 시작 -->
+
+                <div class="card-header">
+                    <!-- 카드의 헤더 섹션 -->
+                    게시판 등록
+                </div>
+
+                <div class="card-body">
+                    <!-- 폼이 포함된 카드 본문 -->
+
+                    <!-- POST 방식으로 게시판을 등록하는 폼 -->
+                    <form action="/board/register" method="post">
+
+                        <div class="input-group mb-3">
+                            <!-- 제목을 위한 입력 -->
+                            <span class="input-group-text">제목</span>
+                            <input type="text" name="title" class="form-control" placeholder="제목">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <!-- 내용을 위한 텍스트 영역 -->
+                            <span class="input-group-text">내용</span>
+                            <textarea class="form-control col-sm-5" rows="5" name="content"></textarea>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <!-- 작성자 이름을 위한 입력 -->
+                            <span class="input-group-text">작성자</span>
+                            <input type="text" name="writer" class="form-control" placeholder="작성자">
+                        </div>
+
+                        <div class="my-4">
+                            <!-- 폼 제출 및 재설정을 위한 버튼 그룹 -->
+                            <div class="float-end">
+                                <button type="submit" class="btn btn-primary">제출</button>
+                                <button type="reset" class="btn btn-secondary">재설정</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div><!-- 카드 본문의 끝 -->
+
+            </div><!-- 카드의 끝 -->
+        </div><!-- 열의 끝 -->
+    </div><!-- 행의 끝 -->
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    // 서버 측 검증 오류를 처리하기 위한 자바스크립트
+
+    const errors = [[${errors}]]  // Thymeleaf를 사용하여 서버에서 전달된 오류
+    console.log(errors)
+
+    let errorMsg = ''
+
+    if(errors){
+        // 오류를 반복하며 오류 메시지 작성
+        for (let i = 0; i < errors.length; i++) {
+            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+        }
+        // 작성된 오류 메시지로 사용자에게 알림
+        alert(errorMsg)
+    }
+
+</script>
