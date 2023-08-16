@@ -24,6 +24,7 @@
 
 ## 화면 구성
 부트스트랩의 디자인 템플릿 중 ‘Simple Side-bar’를 이용하였습니다.
+<img width="2993" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/ca946f00-20f5-4509-a2fd-27b82cf3956a">
 
 
 
