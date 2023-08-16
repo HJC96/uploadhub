@@ -49,7 +49,8 @@ public interface BoardService {
                 .regDate(board.getRegDate())
                 .modDate(board.getModDate())
                 .build();
-        List<String> fileNames = board.getImageSet().stream().sorted().map(boardImage -> boardImage.getUuid()+"_"+boardImage.getFileName()).collect(Collectors.toList());
+        List<String> fileNames =
+                board.getImageSet().stream().sorted().map(boardImage -> boardImage.getUuid()+"_"+boardImage.getFileName()).collect(Collectors.toList());
         boardDTO.setFileNames(fileNames);
         return boardDTO;
     }
