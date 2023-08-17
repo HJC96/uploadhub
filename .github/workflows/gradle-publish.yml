@@ -48,7 +48,7 @@ jobs:
         arguments: build
 
     - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2
+      uses: EnricoMi/publish-unit-test-result-action@v3
       if: always() # 이 액션을 항상 실행하도록 설정, 실패한 경우에도
       with:
         files: ./build/test-results/test/*.xml
