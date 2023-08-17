@@ -45,10 +45,11 @@ public class BoardTest {
         Assertions.assertThat(retrievedBoard.getContent()).isEqualTo(board.getContent());
         Assertions.assertThat(retrievedBoard.getWriter()).isEqualTo(board.getWriter());
 
-        log.info(retrievedBoard);
-        log.info("---------------");
-        for (BoardImage boardImage : retrievedBoard.getImageSet()) {
-            log.info(boardImage);
-        }
+//        /* Local Test */
+//        log.info(retrievedBoard);
+//        log.info("---------------");
+//        for (BoardImage boardImage : retrievedBoard.getImageSet()) {
+//            log.info(boardImage);
+//        }
     }
 }
