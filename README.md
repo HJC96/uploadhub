@@ -28,14 +28,14 @@
 - ### http://localhost:8080/board/list
 <img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/ca946f00-20f5-4509-a2fd-27b82cf3956a">
 
+- ### http://localhost:8080/board/register
+<img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/e893bc62-cc19-4ccc-8956-c1b0316dcbd8">
+
 - ### http://localhost:8080/board/read?bno=11&null
 <img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/13bce9e2-166e-4dc9-889a-d57354a6df72">
 
 - ### http://localhost:8080/board/modify?bno=11&null
 <img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/ef9737be-942e-49a0-abee-387620fac502">
-
-- ### http://localhost:8080/board/register
-<img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/e893bc62-cc19-4ccc-8956-c1b0316dcbd8">
 
 
 ## API overview
