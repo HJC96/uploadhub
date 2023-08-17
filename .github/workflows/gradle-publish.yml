@@ -12,14 +12,16 @@ on:
     types: [created]
   push: 
   pull_request:
-  
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      checks: write
+      contents: write
       packages: write
+
       
     env: 
       SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/webdb_1
@@ -47,3 +49,8 @@ jobs:
       with:
         arguments: build
 
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always() # 이 액션을 항상 실행하도록 설정, 실패한 경우에도
+      with:
+        files: ./build/test-results/test/*.xml
