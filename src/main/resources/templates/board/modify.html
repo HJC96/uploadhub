@@ -138,6 +138,7 @@
 
         formObj.action = `/board/modify?${link}`
 
+        console.log(formObj.action)
         //첨부파일 추가
         appendFileData()
 
@@ -267,9 +268,14 @@
         uploadToServer(formObj).then(result => {
             console.log(result)
             //console.log(result)
-            for (const uploadResult of result) {
-                showUploadFile(uploadResult)
-            }
+              for (const uploadResult of result) {
+               console.log(uploadResult)
+                showUploadFile({
+                uuid:uploadResult.uuid,
+                fileName:uploadResult.filename,
+                link: uploadResult.link
+                })
+              }
             uploadModal.hide()
         }).catch(e => {
             uploadModal.hide()

@@ -73,7 +73,7 @@ class BoardRepositoryTest {
 
     @Test
     public void testDataInsert(){
-        IntStream.range(1,100).forEach(i->{
+        IntStream.range(1,10).forEach(i->{
             Board board = Board.builder()
                     .title("title..." + i)
                     .content("content..."+i)
@@ -129,7 +129,7 @@ class BoardRepositoryTest {
 
     @Test
     public void testInsertAll(){
-        for(int i=1;i<=100;i++){
+        for(int i=1;i<=10;i++){
             Board board = Board.builder()
                     .title("Title..."+i)
                     .content("Content..."+i)
