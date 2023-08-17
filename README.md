@@ -38,5 +38,5 @@
 <img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/ef9737be-942e-49a0-abee-387620fac502">
 
 
-## API overview
-<img width="1159" alt="스크린샷 2023-08-17 오전 7 13 52" src="https://github.com/HJC96/uploadhub/assets/87226129/b7ae8aa5-1aa7-40b2-a9bf-d3adf15df3f0">
+## Overview
+<img width="900" alt="스크린샷 2023-08-17 오전 7 13 52" src="https://github.com/HJC96/uploadhub/assets/87226129/b7ae8aa5-1aa7-40b2-a9bf-d3adf15df3f0">
