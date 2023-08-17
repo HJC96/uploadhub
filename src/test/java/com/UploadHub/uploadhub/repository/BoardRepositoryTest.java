@@ -1,63 +1,79 @@
-//package com.UploadHub.uploadhub.repository;
-//
-//import com.UploadHub.uploadhub.domain.Board;
-//import com.UploadHub.uploadhub.domain.BoardListReplyCountDTO;
-//import com.UploadHub.uploadhub.dto.BoardListAllDTO;
-//import lombok.extern.log4j.Log4j2;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageRequest;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.data.domain.Sort;
-//import org.springframework.test.annotation.Commit;
-//
-//import javax.transaction.Transactional;
-//import java.util.Optional;
-//import java.util.UUID;
-//import java.util.stream.IntStream;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//@SpringBootTest
-//@Log4j2
-//class BoardRepositoryTest {
-//    @Autowired
-//    private BoardRepository boardRepository;
-//    @Autowired
-//    private ReplyRepository replyRepository;
-//    @Test
-//    public void testInsertAndSelectAndUpdateAndDelete() {
-//        // Insert part
-//        Board board = new Board();
-//        board.setBno(1L);
-//        board.setTitle("tst_title");
-//        board.setContent("tst_content");
-//        board.setWriter("jc");
-//
-//        Board savedBoard = boardRepository.save(board);
-//        Assertions.assertEquals(1L, savedBoard.getBno());
-//
-//        // Select part
-//        Long bno = 1L;
-//        Optional<Board> result = boardRepository.findById(bno);
-//
-//        Board selectedBoard = result.orElseThrow();
-//        Assertions.assertEquals(bno, selectedBoard.getBno());
-//
-//        // Update part
-//        selectedBoard.change("update..title 100", "update content..100");
-//
-//        boardRepository.save(selectedBoard);
-//        boardRepository.flush();
-//        log.info("Reg Date: " + selectedBoard.getRegDate());
-//        log.info("Mod Date: " + selectedBoard.getModDate());
-//
-//        //Delete part
-//        boardRepository.deleteById(bno);
-//    }
+package com.UploadHub.uploadhub.repository;
+
+import com.UploadHub.uploadhub.domain.Board;
+import com.UploadHub.uploadhub.domain.BoardListReplyCountDTO;
+import com.UploadHub.uploadhub.dto.BoardListAllDTO;
+import lombok.extern.log4j.Log4j2;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+@Log4j2
+class BoardRepositoryTest {
+    @Autowired
+    private BoardRepository boardRepository;
+    @Autowired
+    private ReplyRepository replyRepository;
+    @Test
+    @Transactional
+    public void testInsertAndSelectAndUpdateAndDelete() {
+        // Insert part
+        Board board = new Board();
+        board.setBno(1L);
+        board.setTitle("tst_title");
+        board.setContent("tst_content");
+        board.setWriter("jc");
+
+        Board savedBoard = boardRepository.save(board);
+        Assertions.assertThat(savedBoard.getBno()).isEqualTo(1L);
+
+        // Select part
+        Long bno = 1L;
+        Optional<Board> result = boardRepository.findById(bno);
+
+        Board selectedBoard = result.orElseThrow();
+        Assertions.assertThat(selectedBoard.getBno()).isEqualTo(bno);
+
+        // Update part
+        selectedBoard.change("update..title 100", "update content..100");
+
+        boardRepository.save(selectedBoard);
+        boardRepository.flush();
+
+        Assertions.assertThat(selectedBoard.getTitle()).isEqualTo("update..title 100");
+        Assertions.assertThat(selectedBoard.getContent()).isEqualTo("update content..100");
+
+        log.info("Reg Date: " + selectedBoard.getRegDate());
+        log.info("Mod Date: " + selectedBoard.getModDate());
+
+        // Delete part
+        boardRepository.deleteById(bno);
+
+        // Optionally, ensure that it's deleted
+        Assertions.assertThat(boardRepository.findById(bno)).isNotPresent();
+    }
+
+
+
+
+
+
+
 //
 //    @Test
 //    public void testPaging(){
@@ -156,4 +172,4 @@
 //
 //        result.getContent().forEach(boardListAllDTO -> log.info(boardListAllDTO));
 //    }
-//}
+}
