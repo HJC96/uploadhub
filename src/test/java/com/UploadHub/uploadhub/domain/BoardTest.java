@@ -2,7 +2,8 @@ package com.UploadHub.uploadhub.domain;
 
 import com.UploadHub.uploadhub.repository.BoardRepository;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.*;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -32,10 +33,17 @@ public class BoardTest {
         Board savedBoard = boardRepository.save(board);
         Long savedBoardId = savedBoard.getBno();
 
+        Assertions.assertThat(savedBoardId).isNotNull();
+
         // Read part
         Optional<Board> result = boardRepository.findByIdWithImages(savedBoardId);
+        Assertions.assertThat(result).isPresent();
 
         Board retrievedBoard = result.orElseThrow();
+
+        Assertions.assertThat(retrievedBoard.getTitle()).isEqualTo(board.getTitle());
+        Assertions.assertThat(retrievedBoard.getContent()).isEqualTo(board.getContent());
+        Assertions.assertThat(retrievedBoard.getWriter()).isEqualTo(board.getWriter());
 
         log.info(retrievedBoard);
         log.info("---------------");

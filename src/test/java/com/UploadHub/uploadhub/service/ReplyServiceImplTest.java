@@ -17,7 +17,6 @@ public class ReplyServiceImplTest {
         ReplyDTO replyDTO = ReplyDTO.builder()
                 .replyText("ReplyDTO Text")
                 .replyer("replyer")
-                .bno(100L)
                 .build();
         log.info(replyService.register(replyDTO));
     }
