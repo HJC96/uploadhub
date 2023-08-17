@@ -12,7 +12,9 @@ on:
     types: [created]
   push: 
   pull_request:
-  
+
+permissions: write-all 
+
 jobs:
   build:
 
