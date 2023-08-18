@@ -1,44 +1,47 @@
-//package com.UploadHub.uploadhub.service;
-//
-//import com.UploadHub.uploadhub.domain.Board;
-//import com.UploadHub.uploadhub.dto.*;
-//import lombok.extern.log4j.Log4j2;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//import java.util.Arrays;
-//import java.util.List;
-//import java.util.UUID;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//@SpringBootTest
-//@Log4j2
-//public class BoardServiceImplTest {
-//
-//    @Autowired
-//    private BoardService boardService;
-//
-//    @Test
-//    public void testRegister(){
-//        BoardDTO boardDTO = BoardDTO.builder()
-//                .title("Test Title...")
-//                .content("Test content...")
-//                .writer("user00")
-//                .build();
-//        Long bno = boardService.register(boardDTO);
-//    }
-//    @Test
-//    public void testModify() {
-//        BoardDTO boardDTO = BoardDTO.builder()
-//                        .bno(91L)
-//                        .title("updated ...91")
-//                        .content("Updated ...")
-//                        .build();
-//
-//        boardService.modify(boardDTO);
-//    }
+package com.UploadHub.uploadhub.service;
+
+import com.UploadHub.uploadhub.domain.Board;
+import com.UploadHub.uploadhub.dto.*;
+import lombok.extern.log4j.Log4j2;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.transaction.Transactional;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
+@SpringBootTest
+@Log4j2 @Transactional
+public class BoardServiceImplTest {
+
+    @Autowired
+    private BoardService boardService;
+
+    @Test
+    public void testRegisterAndModify(){
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(1L)
+                .title("Test Title...")
+                .content("Test content...")
+                .writer("user00")
+                .build();
+        Long bno = boardService.register(boardDTO);
+        Assertions.assertThat(1L).isEqualTo(boardDTO.getBno());
+
+        boardDTO = BoardDTO.builder()
+                        .bno(91L)
+                        .title("updated ...91")
+                        .content("Updated ...")
+                        .build();
+
+        boardService.modify(boardDTO);
+        Assertions.assertThat(91L).isEqualTo(boardDTO.getBno());
+
+    }
 //    @Test
 //    public void testList(){
 //        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
@@ -117,5 +120,5 @@
 //            log.info("-----------------------------------");
 //        });
 //    }
-//
-//}
+
+}
