@@ -54,10 +54,10 @@ public class BoardServiceImplTest {
 //        log.info(responseDTO);
 //    }
 //
-    @Test
+    @Test @Transactional
     public void testRegisterWithImages(){
         BoardDTO boardDTO = BoardDTO.builder()
-                .bno(101L)
+                .bno(1L)
                 .title("Test Title...")
                 .content("Test content...")
                 .writer("user00")
@@ -68,18 +68,18 @@ public class BoardServiceImplTest {
                 UUID.randomUUID()+"_ccc.jpg"
         ));
         boardService.register(boardDTO);
-        Assertions.assertThat(101L).isEqualTo(boardDTO.getBno());
+        Assertions.assertThat(1L).isEqualTo(boardDTO.getBno());
 
         boardDTO = BoardDTO.builder()
-                .bno(101L)
+                .bno(1L)
                 .title("Updated...101")
                 .content("Updated content 101")
                 .writer("user01")
                 .build();
-
-        boardDTO.setFileNames(Arrays.asList(UUID.randomUUID()+"_zzz.jpg"));
+        UUID uuid = UUID.randomUUID();
+        boardDTO.setFileNames(Arrays.asList(uuid+"_zzz.jpg"));
         boardService.modify(boardDTO);
-        Assertions.assertThat(Arrays.asList(UUID.randomUUID()+"_zzz.jpg")).isEqualTo(boardDTO.getFileNames());
+        Assertions.assertThat(Arrays.asList(uuid+"_zzz.jpg")).isEqualTo(boardDTO.getFileNames());
     }
 //    @Test
 //    public void testReadAll(){
