@@ -35,8 +35,8 @@ public class BoardSearchImplTest {
         Assertions.assertThat(savedBoard.getBno()).isEqualTo(1L);
         boardRepository.flush();
 
-        String[] types = {"t", "c", "w"};
-        String keyword = "1";
+        String[] types = null;
+        String keyword = null;
         Pageable pageable = PageRequest.of(0,10, Sort.by("bno").descending());
         Page<Board> result = boardRepository.searchAll(types, keyword, pageable);
 
@@ -51,9 +51,9 @@ public class BoardSearchImplTest {
 
         // Assertions for content
         Assertions.assertThat(result.getContent()).isNotEmpty();
-//        result.getContent().forEach(board2 -> {
-//            Assertions.assertThat(board2).isNotNull();
-//            log.info(board2);
-//        });
+        result.getContent().forEach(board2 -> {
+            Assertions.assertThat(board2).isNotNull();
+            log.info(board2);
+        });
     }
 }
