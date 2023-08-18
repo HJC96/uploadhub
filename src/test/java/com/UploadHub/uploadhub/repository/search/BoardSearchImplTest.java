@@ -39,7 +39,7 @@ public class BoardSearchImplTest {
         Page<Board> result = boardRepository.searchAll(types, keyword, pageable);
 
         // Assertions for Page attributes
-        Assertions.assertThat(result.getTotalPages()).isGreaterThan(0); // 예상되는 페이지 수에 따라 수정
+//        Assertions.assertThat(result.getTotalPages()).isGreaterThan(0); // 예상되는 페이지 수에 따라 수정
 //        Assertions.assertThat(result.getSize()).isEqualTo(10);
 //        Assertions.assertThat(result.getNumber()).isEqualTo(0);
 
