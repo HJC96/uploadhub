@@ -74,6 +74,7 @@ public class BoardServiceImplTest {
                 .bno(101L)
                 .title("Updated...101")
                 .content("Updated content 101")
+                .writer("user01")
                 .build();
 
         boardDTO.setFileNames(Arrays.asList(UUID.randomUUID()+"_zzz.jpg"));
