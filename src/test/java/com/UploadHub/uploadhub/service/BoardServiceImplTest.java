@@ -33,13 +33,13 @@ public class BoardServiceImplTest {
         Assertions.assertThat(1L).isEqualTo(boardDTO.getBno());
 
         boardDTO = BoardDTO.builder()
-                        .bno(91L)
-                        .title("updated ...91")
-                        .content("Updated ...")
+                        .bno(1L)
+                        .title("updated ...1")
+                        .content("Updated ...1")
                         .build();
 
         boardService.modify(boardDTO);
-        Assertions.assertThat(91L).isEqualTo(boardDTO.getBno());
+        Assertions.assertThat("updated ...1").isEqualTo(boardDTO.getTitle());
 
     }
 //    @Test
@@ -54,20 +54,31 @@ public class BoardServiceImplTest {
 //        log.info(responseDTO);
 //    }
 //
-//    @Test
-//    public void testRegisterWithImages(){
-//        BoardDTO boardDTO = BoardDTO.builder()
-//                .title("Test Title...")
-//                .content("Test content...")
-//                .writer("user00")
-//                .build();
-//        boardDTO.setFileNames(Arrays.asList(
-//                UUID.randomUUID()+"_aaa.jpg",
-//                UUID.randomUUID()+"_bbb.jpg",
-//                UUID.randomUUID()+"_ccc.jpg"
-//        ));
-//        Long bno = boardService.register(boardDTO);
-//    }
+    @Test
+    public void testRegisterWithImages(){
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(101L)
+                .title("Test Title...")
+                .content("Test content...")
+                .writer("user00")
+                .build();
+        boardDTO.setFileNames(Arrays.asList(
+                UUID.randomUUID()+"_aaa.jpg",
+                UUID.randomUUID()+"_bbb.jpg",
+                UUID.randomUUID()+"_ccc.jpg"
+        ));
+        Long bno = boardService.register(boardDTO);
+
+        boardDTO = BoardDTO.builder()
+                .bno(101L)
+                .title("Updated...101")
+                .content("Updated content 101")
+                .build();
+
+        boardDTO.setFileNames(Arrays.asList(UUID.randomUUID()+"_zzz.jpg"));
+        boardService.modify(boardDTO);
+        Assertions.assertThat(UUID.randomUUID()+"_zzz.jpg").isEqualTo(boardDTO.getFileNames());
+    }
 //    @Test
 //    public void testReadAll(){
 //        Long bno = 101L;
