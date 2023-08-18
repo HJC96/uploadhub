@@ -29,7 +29,7 @@ public class BoardServiceImplTest {
                 .content("Test content...")
                 .writer("user00")
                 .build();
-        Long bno = boardService.register(boardDTO);
+        boardService.register(boardDTO);
         Assertions.assertThat(1L).isEqualTo(boardDTO.getBno());
 
         boardDTO = BoardDTO.builder()
@@ -67,7 +67,8 @@ public class BoardServiceImplTest {
                 UUID.randomUUID()+"_bbb.jpg",
                 UUID.randomUUID()+"_ccc.jpg"
         ));
-        Long bno = boardService.register(boardDTO);
+        boardService.register(boardDTO);
+        Assertions.assertThat(101L).isEqualTo(boardDTO.getBno());
 
         boardDTO = BoardDTO.builder()
                 .bno(101L)
@@ -77,7 +78,7 @@ public class BoardServiceImplTest {
 
         boardDTO.setFileNames(Arrays.asList(UUID.randomUUID()+"_zzz.jpg"));
         boardService.modify(boardDTO);
-        Assertions.assertThat(UUID.randomUUID()+"_zzz.jpg").isEqualTo(boardDTO.getFileNames());
+        Assertions.assertThat(Arrays.asList(UUID.randomUUID()+"_zzz.jpg")).isEqualTo(boardDTO.getFileNames());
     }
 //    @Test
 //    public void testReadAll(){
