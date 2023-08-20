@@ -26,7 +26,8 @@
 부트스트랩의 디자인 템플릿 중 ‘Simple Side-bar’를 이용하였습니다.
 
 - ### http://localhost:8080/board/list
-<img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/ca946f00-20f5-4509-a2fd-27b82cf3956a">
+<img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/bd8f1c69-5242-4621-b6f7-7bb8f2c21557">
+
 
 - ### http://localhost:8080/board/register
 <img width="900" alt="image" src="https://github.com/HJC96/uploadhub/assets/87226129/e893bc62-cc19-4ccc-8956-c1b0316dcbd8">
